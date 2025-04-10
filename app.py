@@ -11,6 +11,10 @@ creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPE
 client = gspread.authorize(creds)
 sheet = client.open_by_key('1n8Vx60cTPEBIf5RykxPSqZ1uOWr2dt090GQkZa6gLpw').sheet1
 
+@app.route('/')
+def home():
+    return "API is running. Use POST /update-sheet to update the spreadsheet."
+
 @app.route('/update-sheet', methods=['POST'])
 def update_sheet():
     data = request.json
