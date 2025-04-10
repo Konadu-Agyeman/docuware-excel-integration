@@ -1,3 +1,4 @@
-Flask==2.1.1
+
+Flask==3.0.0
 gspread==5.4.0
 google-auth==2.16.0
