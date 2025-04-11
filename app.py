@@ -8,9 +8,7 @@ app = Flask(__name__)
 
 # Set up Google Sheets connection
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-
 try:
-    # Get service account credentials from environment variable
     service_account_info = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT', '{}'))
     creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
     client = gspread.authorize(creds)
@@ -19,9 +17,11 @@ except Exception as e:
     print("Error: Make sure GOOGLE_SERVICE_ACCOUNT secret is set with valid JSON credentials")
     raise e
 
+
 @app.route('/')
 def home():
     return "API is running. Use POST /update-sheet to update the spreadsheet."
+
 
 @app.route('/update-sheet', methods=['POST'])
 def update_sheet():
@@ -53,9 +53,13 @@ def update_sheet():
     sheet.append_row([name, department, location, amount, comment])
     return jsonify({'status': 'added'}), 200
 
+
 @app.route('/openapi.json', methods=['GET'])
 def get_openapi():
     return send_file('openapi.json', mimetype='application/json')
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    # Use the PORT environment variable provided by Heroku
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
