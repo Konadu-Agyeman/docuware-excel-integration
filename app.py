@@ -5,10 +5,13 @@ from google.oauth2.service_account import Credentials
 app = Flask(__name__)
 
 # Set up Google Sheets connection
-SERVICE_ACCOUNT_FILE = 'docuwareexcelintergration-40e3b9d1cd88.json'
+import os
+import json
+
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE,
-                                              scopes=SCOPES)
+service_account_info = json.loads(os.environ['GOOGLE_SERVICE_ACCOUNT'])
+creds = Credentials.from_service_account_info(service_account_info,
+                                            scopes=SCOPES)
 client = gspread.authorize(creds)
 sheet = client.open_by_key(
     '1n8Vx60cTPEBIf5RykxPSqZ1uOWr2dt090GQkZa6gLpw').sheet1
