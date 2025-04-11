@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "DocuWare Google Sheets API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/update-sheet": {
+      "post": {
+        "summary": "Update or insert into Google Sheet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "department": { "type": "string" },
+                  "location": { "type": "string" },
+                  "amount": { "type": "string" },
+                  "comment": { "type": "string" }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}
