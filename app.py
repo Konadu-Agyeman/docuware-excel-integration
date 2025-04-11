@@ -9,12 +9,14 @@ import os
 import json
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-service_account_info = json.loads(os.environ['GOOGLE_SERVICE_ACCOUNT'])
-creds = Credentials.from_service_account_info(service_account_info,
-                                            scopes=SCOPES)
-client = gspread.authorize(creds)
-sheet = client.open_by_key(
-    '1n8Vx60cTPEBIf5RykxPSqZ1uOWr2dt090GQkZa6gLpw').sheet1
+try:
+    service_account_info = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT', '{}'))
+    creds = Credentials.from_service_account_info(service_account_info, scopes=SCOPES)
+    client = gspread.authorize(creds)
+    sheet = client.open_by_key('1n8Vx60cTPEBIf5RykxPSqZ1uOWr2dt090GQkZa6gLpw').sheet1
+except Exception as e:
+    print("Error: Make sure GOOGLE_SERVICE_ACCOUNT secret is set with valid JSON credentials")
+    raise e
 
 
 @app.route('/')
